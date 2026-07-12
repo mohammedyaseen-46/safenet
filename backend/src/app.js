@@ -17,3 +17,11 @@ app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//volunteer update 12/07/26
+const path = require('path');
+const volunteerRoutes = require('./routes/volunteerRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+ 
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/volunteers', volunteerRoutes);
+app.use('/admin', adminRoutes);
