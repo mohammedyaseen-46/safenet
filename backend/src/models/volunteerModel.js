@@ -58,6 +58,29 @@ async function setLocation(userId, lat, lng) {
   );
   return result.rows[0];
 }
+async function findNearbyVolunteers(lat, lng, radiusKm) {
+  const result = await pool.query(
+    `SELECT vp.user_id, u.name, u.phone, vp.last_lat, vp.last_lng,
+            ST_DistanceSphere(
+              ST_MakePoint(vp.last_lng, vp.last_lat),
+              ST_MakePoint($2, $1)
+            ) / 1000 AS distance_km
+     FROM volunteer_profiles vp
+     JOIN users u ON u.id = vp.user_id
+     WHERE vp.verification_status = 'approved'
+       AND vp.is_active = true
+       AND vp.last_lat IS NOT NULL
+       AND vp.last_lng IS NOT NULL
+       AND ST_DistanceSphere(
+             ST_MakePoint(vp.last_lng, vp.last_lat),
+             ST_MakePoint($2, $1)
+           ) <= $3 * 1000
+     ORDER BY distance_km ASC`,
+    [lat, lng, radiusKm]
+  );
+  return result.rows;
+}
+ 
 
 module.exports = {
   createProfile,
@@ -66,4 +89,5 @@ module.exports = {
   getProfile,
   setActiveStatus,
   setLocation,
+  findNearbyVolunteers,
 };
