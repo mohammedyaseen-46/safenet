@@ -70,6 +70,21 @@ async function resolveAlert(req, res) {
     console.error(err);
     res.status(500).json({ error: 'Server error resolving alert.' });
   }
+  const { getAllVolunteers } = require('../models/volunteerModel'); // add to existing import line
+ 
+async function listAllVolunteers(req, res) {
+  try {
+    const volunteers = await getAllVolunteers();
+    res.status(200).json({ volunteers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error fetching volunteers.' });
+  }
 }
  
-module.exports = { listPending, reviewVolunteer, listActiveAlerts, resolveAlert };
+// Update your existing module.exports to include listAllVolunteers:
+module.exports = { listPending, reviewVolunteer, listActiveAlerts, resolveAlert, listAllVolunteers };
+
+}
+ 
+

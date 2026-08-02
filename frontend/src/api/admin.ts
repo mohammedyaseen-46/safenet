@@ -28,3 +28,18 @@ export async function resolveAlert(alertId: string) {
   const response = await apiClient.patch(`/admin/alerts/${alertId}/resolve`);
   return response.data;
 }
+export interface VolunteerSummary {
+  user_id: string;
+  name: string;
+  phone: string;
+  verification_status: 'pending' | 'approved' | 'rejected';
+  is_active: boolean;
+  last_seen: string | null;
+}
+ 
+export async function getAllVolunteers() {
+  const response = await apiClient.get<{ volunteers: VolunteerSummary[] }>('/admin/volunteers');
+  return response.data.volunteers;
+}
+
+

@@ -54,5 +54,14 @@ async function cancelAlert(req, res) {
     res.status(500).json({ error: 'Server error cancelling alert.' });
   }
 }
+io.to('admins').emit('alert:new', {
+  ...alert,
+  matched_volunteers: nearbyVolunteers.map((v) => ({
+    user_id: v.user_id,
+    name: v.name,
+    distance_km: Number(v.distance_km.toFixed(2)),
+  })),
+});
+
  
 module.exports = { raiseAlert, cancelAlert };

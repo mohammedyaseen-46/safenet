@@ -79,6 +79,16 @@ async function findNearbyVolunteers(lat, lng, radiusKm) {
     [lat, lng, radiusKm]
   );
   return result.rows;
+  async function getAllVolunteers() {
+  const result = await pool.query(
+    `SELECT vp.user_id, u.name, u.phone, vp.verification_status, vp.is_active, vp.last_seen
+     FROM volunteer_profiles vp
+     JOIN users u ON u.id = vp.user_id
+     ORDER BY u.name ASC`
+  );
+  return result.rows;
+}
+
 }
  
 

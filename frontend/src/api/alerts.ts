@@ -8,6 +8,9 @@ export interface Alert {
   origin_lng: number;
   created_at: string;
   resolved_at: string | null;
+  matched_volunteers?: { user_id: string; name: string; distance_km: number }[];
+
+
 }
  
 export async function raiseAlert(lat: number, lng: number) {

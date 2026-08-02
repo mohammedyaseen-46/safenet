@@ -5,7 +5,10 @@ const requireRole = require('../middleware/roleMiddleware');
  const { listPending, reviewVolunteer, listActiveAlerts, resolveAlert } = require('../controllers/adminController');
 router.get('/volunteers/pending', authMiddleware, requireRole('admin'), listPending);
 router.patch('/volunteers/:userId', authMiddleware, requireRole('admin'), reviewVolunteer);
+ const { listPending, reviewVolunteer, listActiveAlerts, resolveAlert, listAllVolunteers } = require('../controllers/adminController');
  
+router.get('/volunteers', authMiddleware, requireRole('admin'), listAllVolunteers);
+
 
  
 router.get('/alerts/active', authMiddleware, requireRole('admin'), listActiveAlerts);
